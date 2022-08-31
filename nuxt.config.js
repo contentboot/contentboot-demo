@@ -29,11 +29,17 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    // "~/plugins/back-to-top.js"
+    "@/plugins/axios.server.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
+
+  router: {
+    scrollBehavior(to, from, savedPosition) {
+      return { x: 0, y: 0 }
+    }
+  },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [

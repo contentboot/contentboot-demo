@@ -7,7 +7,6 @@
 
 <script>
 export default {
-  scrollToTop: true,
   data: () => ({projects: []}),
   asyncData: async ({$axios}) => {
     let data = await $axios.$get("/", {

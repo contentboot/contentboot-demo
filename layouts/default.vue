@@ -1,15 +1,17 @@
 <template>
-  <div class="bg-secondary-light dark:bg-primary-dark">
+  <div class="bg-secondary-light dark:bg-primary-dark h-full flex flex-col">
     <!-- App header -->
-    <AppHeader />
+    <AppHeader class="flex-none"/>
 
     <!-- Render contents with transition -->
-    <transition name="fade" mode="out-in">
-      <Nuxt />
-    </transition>
+    <div class="flex-auto">
+      <transition name="fade" mode="out-in">
+        <Nuxt/>
+      </transition>
+    </div>
 
     <!-- App footer -->
-    <AppFooter />
+    <AppFooter class="flex-none"/>
 
     <!-- Go back to top when scrolled down -->
     <div
@@ -26,13 +28,14 @@
         sm:space-x-4
       "
     >
-      <BackToTop />
+      <BackToTop/>
     </div>
   </div>
 </template>
 
 <script>
 import feather from "feather-icons";
+
 export default {
   data: () => {
     return {
@@ -46,6 +49,14 @@ export default {
 </script>
 
 <style>
+html, body, #__nuxt, #__layout {
+  height: 100%;
+}
+
+.nuxt-progress {
+  display: none;
+}
+
 .vue-back-to-top {
   @apply p-2 sm:p-4 bg-indigo-500 hover:bg-indigo-600 text-white;
   border-radius: 50%;

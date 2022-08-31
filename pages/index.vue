@@ -112,7 +112,6 @@
 import feather from "feather-icons";
 
 export default {
-  scrollToTop: true,
   data: () => ({homePage: {}}),
   asyncData: async ({$axios}) => {
     let data = await $axios.$get("/", {

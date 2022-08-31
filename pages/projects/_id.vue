@@ -156,7 +156,6 @@
 import feather from "feather-icons";
 
 export default {
-  scrollToTop: true,
   data: () => ({project: {}}),
   asyncData: async ({$axios, params, error}) => {
     let data = await $axios.$get("/", {
