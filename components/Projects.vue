@@ -12,7 +12,7 @@
           dark:text-ternary-light
         "
       >
-        {{ projectsHeading }}
+        Projects
       </p>
       <!-- Note: This description is commented out, but if you want to see it, just uncomment this -->
       <!-- <p class="text-lg sm:text-xl text-gray-500 dark:text-ternary-light">
@@ -32,7 +32,7 @@
           mb-3
         "
       >
-        Search projects by title or filter by category
+        Search projects by title
       </h3>
       <div
         class="
@@ -63,7 +63,7 @@
             ></i>
           </span>
           <input
-            v-model="searchProject"
+            v-model="searchText"
             class="
               pl-3
               pr-1
@@ -87,7 +87,6 @@
             aria-label="Name"
           />
         </div>
-        <ProjectsFilter @change="selectedProject = $event" />
       </div>
     </div>
 
@@ -111,7 +110,7 @@
         <NuxtLink :to="`/projects/${project.id}`">
           <div>
             <img
-              :src="project.img"
+              :src="project.images[0].path"
               :alt="project.title"
               class="rounded-xl border-none"
             />
@@ -128,8 +127,8 @@
               {{ project.title }}
             </p>
             <span class="text-lg text-ternary-dark dark:text-ternary-light">{{
-              project.category
-            }}</span>
+                project.category
+              }}</span>
           </div>
         </NuxtLink>
       </div>
@@ -138,39 +137,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import feather from "feather-icons";
 
 export default {
+  props: ["projects"],
   data: () => {
     return {
-      selectedProject: "",
-      searchProject: "",
-    };
+      searchText: "",
+    }
   },
   computed: {
-    ...mapState(["projectsHeading", "projectsDescription", "projects"]),
     filteredProjects() {
-      if (this.selectedProject) {
-        return this.filterProjectsByCategory();
-      } else if (this.searchProject) {
-        return this.filterProjectsBySearch();
+      if (this.searchText) {
+        let regExp = new RegExp(this.searchText, "i");
+        return this.projects.filter((p) => p.title.match(regExp));
       }
       return this.projects;
     },
   },
   methods: {
-    filterProjectsByCategory() {
-      return this.projects.filter((item) => {
-        let category =
-          item.category.charAt(0).toUpperCase() + item.category.slice(1);
-        return category.includes(this.selectedProject);
-      });
-    },
-    filterProjectsBySearch() {
-      let project = new RegExp(this.searchProject, "i");
-      return this.projects.filter((el) => el.title.match(project));
-    },
   },
   mounted() {
     feather.replace();

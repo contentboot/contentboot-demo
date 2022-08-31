@@ -1,13 +1,10 @@
 export default {
-  // Target: https://go.nuxtjs.dev/config-target
-  target: "static",
   colorMode: {
     classSuffix: "",
   },
-  buildDir: "dist",
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "Levende's Portfolio",
+    title: "ContentBoot Demo",
     htmlAttrs: {
       lang: "en",
     },
@@ -18,7 +15,7 @@ export default {
       { name: "format-detection", content: "telephone=no" },
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.png" },
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com" },
       {
@@ -46,8 +43,15 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+    '@nuxtjs/axios'
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  axios: {
+    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+    baseURL: 'http://demo-gql.contentboot.com/'
+  },
 };

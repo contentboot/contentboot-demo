@@ -1,13 +1,13 @@
 <template>
   <!-- Scroll to top -->
-  <transition name="fade">
-    <div
-      v-show="isScrolled"
-      class="
+  <div
+    v-show="isScrolled"
+    class="
         transition
         duration-500
         transform
-        hover:-translate-y-1 hover:scale-110
+        hover:-translate-y-1
+        hover:scale-110
         rounded-full
         cursor-pointer
         flex
@@ -21,11 +21,10 @@
         ring-none
         outline-none
       "
-      @click="backToTop"
-    >
-      <i data-feather="chevron-up"></i>
-    </div>
-  </transition>
+    @click="backToTop"
+  >
+    <i data-feather="chevron-up"></i>
+  </div>
 </template>
 
 <script>

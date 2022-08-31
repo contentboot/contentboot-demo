@@ -1,0 +1,69 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - 'release-*'
+
+jobs:
+  build-cn:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.13.2
+      - name: Install packages
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Remove unnecessary files
+        run: rm -rf .git
+      - name: Zip files
+        uses: vimtor/action-zip@v1
+        with:
+          files: .
+          dest: ${{ github.ref_name }}.zip
+      - name: Upload to cos
+        uses: TencentCloud/cos-action@v1
+        with:
+          secret_id: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
+          secret_key: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
+          cos_bucket: cn-demo-1259788260
+          cos_region: ap-shanghai
+          local_path: ${{ github.ref_name }}.zip
+          remote_path: ${{ github.ref_name }}.zip
+
+  build-out-of-cn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.13.2
+      - name: Install packages
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Remove unnecessary files
+        run: rm -rf .git
+      - name: Zip files
+        uses: vimtor/action-zip@v1
+        with:
+          files: .
+          dest: ${{ github.ref_name }}.zip
+      - name: Upload to cos
+        uses: TencentCloud/cos-action@v1
+        with:
+          secret_id: ${{ secrets.TENCENT_CLOUD_SECRET_ID }}
+          secret_key: ${{ secrets.TENCENT_CLOUD_SECRET_KEY }}
+          cos_bucket: ocn-demo-1259788260
+          cos_region: eu-frankfurt
+          local_path: ${{ github.ref_name }}.zip
+          remote_path: ${{ github.ref_name }}.zip
+
+

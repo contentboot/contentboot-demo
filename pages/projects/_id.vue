@@ -31,7 +31,7 @@
                 text-primary-dark
                 dark:text-primary-light
               "
-              >{{ project.publishDate }}</span
+            >{{ new Date(project.publishDate).toLocaleDateString("en-US") }}</span
             >
           </div>
           <div class="flex items-center">
@@ -46,7 +46,7 @@
                 text-primary-dark
                 dark:text-primary-light
               "
-              >{{ project.tag }}</span
+            >{{ project.tag }}</span
             >
           </div>
         </div>
@@ -56,12 +56,12 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 sm:gap-10 mt-12">
         <div
           class="mb-10 sm:mb-0"
-          v-for="projectImage in project.projectImages"
-          :key="projectImage.id"
+          v-for="projectImage in project.images"
+          :key="projectImage.path"
         >
           <img
-            :src="projectImage.img"
-            class="rounded-xl cursor-pointer shadow-lg sm:shadow-none"
+            :src="projectImage.path"
+            class="rounded-xl shadow-lg sm:shadow-none"
           />
         </div>
       </div>
@@ -81,26 +81,12 @@
                 mb-2
               "
             >
-              {{ project.clientTitle }}
+              Client
             </p>
             <ul class="leading-loose">
-              <li
-                v-for="info in project.companyInfos"
-                :key="info.id"
-                class="text-ternary-dark dark:text-ternary-light"
-              >
-                <span>{{ info.title }}: </span>
-                <a
-                  href="#"
-                  :class="
-                    info.title == 'Website' || info.title == 'Phone'
-                      ? 'hover:underline cursor-pointer'
-                      : ''
-                  "
-                  aria-label="Project Webiste and Phone"
-                  >{{ info.details }}</a
-                >
-              </li>
+              <span class="text-ternary-dark dark:text-ternary-light">
+                {{ project.clientName }}
+              </span>
             </ul>
           </div>
 
@@ -115,10 +101,10 @@
                 mb-2
               "
             >
-              {{ project.objectivesTitle }}
+              Objective
             </p>
-            <p class="text-primary-dark dark:text-ternary-light">
-              {{ project.objectivesDetails }}
+            <p class="text-primary-dark dark:text-ternary-light whitespace-pre-line">
+              <span>{{ project.objective }}</span>
             </p>
           </div>
 
@@ -133,49 +119,11 @@
                 mb-2
               "
             >
-              {{ project.techTitle }}
+              Tools & Technologies
             </p>
             <p class="text-primary-dark dark:text-ternary-light">
               {{ project.technologies.join(", ") }}
             </p>
-          </div>
-
-          <!-- Single project social sharing -->
-          <div>
-            <p
-              class="
-                text-2xl
-                font-semibold
-                text-ternary-dark
-                dark:text-ternary-light
-                mb-2
-              "
-            >
-              {{ project.socialTitle }}
-            </p>
-            <div class="flex items-center gap-3 mt-5">
-              <a
-                v-for="social in project.socialSharings"
-                :key="social.id"
-                :href="social.url"
-                target="__blank"
-                aria-label="Share Project"
-                class="
-                  bg-ternary-light
-                  dark:bg-ternary-dark
-                  text-gray-400
-                  hover:text-primary-dark
-                  dark:hover:text-primary-light
-                  p-2
-                  rounded-lg
-                  shadow-sm
-                "
-                ><i
-                  :data-feather="social.icon"
-                  class="w-4 lg:w-5 h-4 lg:h-5"
-                ></i
-              ></a>
-            </div>
           </div>
         </div>
 
@@ -190,20 +138,11 @@
               mb-7
             "
           >
-            {{ project.detailsTitle }}
+            Detail
           </p>
-          <p
-            v-for="projectDetail in project.projectDetails"
-            :key="projectDetail.id"
-            class="mb-5 text-lg text-ternary-dark dark:text-ternary-light"
-          >
-            {{ projectDetail.details }}
-          </p>
+          <div class="project-detail mb-5 text-lg text-ternary-dark dark:text-ternary-light" v-html="project.detail"/>
         </div>
       </div>
-
-      <!-- Project related projects -->
-      <ProjectRelatedProjects />
     </div>
 
     <!-- Load not found components if no project found -->
@@ -215,17 +154,39 @@
 
 <script>
 import feather from "feather-icons";
+
 export default {
   scrollToTop: true,
-  data: () => {
-    return {
-      // Todo
-    };
-  },
-  computed: {
-    project() {
-      return this.$store.getters.getProjectById(this.$route.params.id);
-    },
+  data: () => ({project: {}}),
+  asyncData: async ({$axios, params, error}) => {
+    let data = await $axios.$get("/", {
+      params: {
+        query: `
+          {
+            queryProjects(filter: {id: {eq: "${params.id}"}}) {
+              totalCount
+              results {
+                id
+                title
+                publishDate
+                tag
+                images {
+                  path
+                }
+                clientName
+                objective
+                technologies
+                detail
+              }
+            }
+          }
+      `
+      }
+    })
+    if (data.data.queryProjects.totalCount) {
+      return {project: data.data.queryProjects.results[0]}
+    }
+    error({statusCode: 404, message: "This page could not be found"})
   },
   mounted() {
     feather.replace();
@@ -236,4 +197,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.project-detail {
+  b {
+    font-weight: bold;
+  }
+}
+</style>

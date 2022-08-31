@@ -17,7 +17,7 @@
         <div>
           <NuxtLink to="/">
             <h1 class="text-3xl" transform="translate(418.54 268.82)">
-              Levend<span class="text-purple-700">e</span>
+              ContentBoot <span class="text-purple-700">Demo</span>
             </h1>
           </NuxtLink>
         </div>
@@ -127,27 +127,6 @@
       <div
         class="hidden sm:flex justify-between items-center flex-col md:flex-row"
       >
-        <!-- Hire me button -->
-        <div class="hidden md:block">
-          <button
-            class="
-              text-md
-              font-medium
-              bg-purple-800
-              hover:bg-indigo-600
-              text-white
-              shadow-sm
-              rounded-md
-              px-5
-              py-2.5
-            "
-            @click="showModal()"
-            aria-label="Hire Me Button"
-          >
-            Hire Me
-          </button>
-        </div>
-
         <!-- Theme switcher large screen -->
         <button
           @click="themeSwitcher"
@@ -223,24 +202,14 @@
       </div>
     </div>
 
-    <!-- Hire me modal -->
-    <HireMeModal
-      :showModal="showModal"
-      :modal="modal"
-      :categories="categories"
-      aria-modal="Hire Me Modal"
-    />
   </nav>
 </template>
 
 <script>
 import { mapState } from "vuex";
-// import feather from "feather-icons";
-import HireMeModal from "./HireMeModal.vue";
 
 export default {
   components: {
-    HireMeModal,
   },
   data: () => {
     return {
