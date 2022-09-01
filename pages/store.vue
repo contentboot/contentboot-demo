@@ -1,34 +1,51 @@
 <template>
-  <video controls
-         preload="auto"
-         autoplay
-         loop
-         playsinline
-         webkit-playsinline
-         x5-video-player-type="h5"
-         x5-playsinline
+  <video
+    id="video"
+    controls
+    preload="auto"
+    autoplay
+    playsinline
+    webkit-playsinline
+    x5-video-player-type="h5"
+    x5-playsinline
   >
-    <source :src="videoUrl" type="video/mp4">
+    <source type="video/mp4">
   </video>
 </template>
 
 <script>
-import feather from "feather-icons";
-
 export default {
   layout: "store",
-  data: () => ({videoUrl: {}}),
+  data: () => ({
+    videoUrls: [],
+    currentIndex: 0
+  }),
   asyncData: async ({$axios}) => {
     let dataIndex = await $axios.$get("http://cb-json.contentboot.com/index.json")
     let data = await $axios.$get(dataIndex.data)
-    console.log(data)
-    return {videoUrl: data.video.video.path}
+    return {videoUrls: data.video.videos.map(v => v.path)}
+  },
+  methods: {
+    playVideo() {
+      const videoEle = document.getElementById("video")
+      videoEle.setAttribute("src", this.videoUrls[this.currentIndex])
+      videoEle.load()
+      videoEle.play()
+    }
   },
   mounted() {
-    feather.replace();
-  },
-  updated() {
-    feather.replace();
+    if (this.videoUrls.length) {
+      this.playVideo()
+    }
+
+    document.getElementById("video").addEventListener("ended", () => {
+      if (this.currentIndex === this.videoUrls.length - 1) {
+        this.currentIndex = 0
+      }  else {
+        this.currentIndex ++
+      }
+      this.playVideo()
+    }, false)
   },
 };
 </script>
