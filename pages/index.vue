@@ -66,15 +66,6 @@
           <span class="text-sm sm:text-lg">Get Started</span></a
         >
       </div>
-
-      <!-- Banner right illustration -->
-      <!-- <div class="w-full md:w-2/3 text-right float-right mt-4 sm:mt-0">
-        <img
-          src="https://i.ibb.co/pnQhHMV/IMG-2298-removebg-preview.png"
-          alt="IMG-2298-removebg-preview"
-          border="0"
-        />
-      </div> -->
     </section>
 
     <!-- Projects grid -->
