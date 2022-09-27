@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-secondary-light dark:bg-primary-dark h-full flex flex-col">
+  <div class="bg-secondary-light dark:bg-primary-dark min-h-full flex flex-col">
     <!-- App header -->
     <AppHeader class="flex-none"/>
 
