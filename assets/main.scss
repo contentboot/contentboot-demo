@@ -1,12 +1,11 @@
-body {
-  font-family: "Space Mono", monospace;
-}
-.my-btn {
-  background: #000;
-  color: #fff;
-  padding: 4px 8px;
+html, body, #__nuxt, #__layout {
+  height: 100%;
 }
 
-.font-mono {
-  font-family: "Space Mono", monospace;
+.nuxt-progress {
+  background: linear-gradient(
+      90deg,
+      rgb(67, 56, 202),
+      rgb(109, 40, 217)
+  );;
 }
