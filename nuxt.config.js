@@ -9,15 +9,15 @@ export default {
       lang: "en",
     },
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { hid: "description", name: "description", content: "" },
-      { name: "format-detection", content: "telephone=no" },
+      {charset: "utf-8"},
+      {name: "viewport", content: "width=device-width, initial-scale=1"},
+      {hid: "description", name: "description", content: ""},
+      {name: "format-detection", content: "telephone=no"},
     ],
     link: [
-      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com" },
+      {rel: "icon", type: "image/x-icon", href: "/favicon.ico"},
+      {rel: "preconnect", href: "https://fonts.googleapis.com"},
+      {rel: "preconnect", href: "https://fonts.gstatic.com"},
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,700&display=swap",
@@ -39,7 +39,7 @@ export default {
 
   router: {
     scrollBehavior(to, from, savedPosition) {
-      return { x: 0, y: 0 }
+      return {x: 0, y: 0}
     }
   },
 
@@ -60,6 +60,6 @@ export default {
 
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://demo-gql.contentboot.com/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'http://demo-gql.contentboot.com/' : 'http://cn-pp_afsnrjlrj1-graphql-api.contentboot.cloud/'
   },
 };
